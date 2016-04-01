@@ -22,8 +22,7 @@ describe 'redis::default' do
     end
 
     it 'installs the necessary packages' do
-      expect(chef_run).to install_package('build-essential')
-      expect(chef_run).to install_package('tcl8.5')
+      expect(chef_run).to install_package([ 'build-essential', 'tcl8.5' ])
     end
 
     it 'downloads the redis archive' do

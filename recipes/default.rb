@@ -10,18 +10,17 @@
 
 execute "apt-get update"
 
-package "build-essential"
+package [ "build-essential", "tcl8.5" ]
 
-package "tcl8.5"
+version_number = '2.8.9'
 
-# download http://download.redis.io/releases/redis-2.8.9.tar.gz
-remote_file "~/redis-2.8.9.tar.gz" do
-  source "http://download.redis.io/releases/redis-2.8.9.tar.gz"
-  notifies :run, "execute[tar xzf redis-2.8.9.tar.gz]", :immediately
+remote_file "~/redis-#{version_number}.tar.gz" do
+  source "http://download.redis.io/releases/redis-#{version_number}.tar.gz"
+  notifies :run, "execute[tar xzf redis-#{version_number}.tar.gz]", :immediately
 end
 
 # unzip the archive
-execute "tar xzf redis-2.8.9.tar.gz" do
+execute "tar xzf redis-#{version_number}.tar.gz" do
   cwd "/tmp"
   action :nothing
   notifies :run, "execute[make && make install]", :immediately
@@ -29,14 +28,14 @@ end
 
 # Configure the application: make and make install
 execute "make && make install" do
-  cwd "/tmp/redis-2.8.9"
+  cwd "/tmp/redis-#{version_number}"
   action :nothing
   notifies :run, "execute[echo -n | ./install_server.sh]", :immediately
 end
 
 # Install the Server
 execute "echo -n | ./install_server.sh" do
-  cwd "/tmp/redis-2.8.9/utils"
+  cwd "/tmp/redis-#{version_number}/utils"
   action :nothing
 end
 
