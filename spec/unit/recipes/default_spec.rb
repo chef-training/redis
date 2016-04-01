@@ -13,6 +13,8 @@ describe 'redis::default' do
       runner.converge(described_recipe)
     end
 
+    let(:version) { '2.8.9' }
+
     it 'converges successfully' do
       expect { chef_run }.to_not raise_error
     end
@@ -26,7 +28,7 @@ describe 'redis::default' do
     end
 
     it 'downloads the redis archive' do
-      expect(chef_run).to create_remote_file('~/redis-2.8.9.tar.gz')
+      expect(chef_run).to create_remote_file("~/redis-#{version}.tar.gz")
     end
 
     it 'unpacks the redis archive' do
