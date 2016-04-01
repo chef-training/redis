@@ -8,11 +8,11 @@
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-redis
 #
 
+version_number = node['redis']['version']
+
 execute "apt-get update"
 
 package [ "build-essential", "tcl8.5" ]
-
-version_number = '2.8.9'
 
 remote_file "~/redis-#{version_number}.tar.gz" do
   source "http://download.redis.io/releases/redis-#{version_number}.tar.gz"
